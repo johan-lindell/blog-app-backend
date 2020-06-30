@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InllYm9pc3MiLCJpZCI6IjVlZmFlOTNkMWY1ODNjMTI1NDYzMmUyMSIsImlhdCI6MTU5MzUwNjY1MX0.uLCPtr4-ATndMBRj-9fzeXCRh6101XksujT9_L9CbFI
 
 {
-  "title": "test",
-  "author": "String",
-  "url": "String",
-  "likes": "40404"
+  "title": "testing ma authorization middleware",
+  "author": "Johan Lindell",
+  "url": "no url :((",
+  "likes": "2"
 }

@@ -1,42 +1,44 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 const { request, response } = require('express')
 
 //show API as a lst of objects in JSON format
 blogsRouter.get('/', async (request, response) => {
-    console.log('running blogs router get')
-    const blogs = await Blog.find({})
+    const blogs = await Blog
+      .find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs.map(blog => blog.toJSON()))
   }
 )
 
+
 //add a blog to MONGODB
 blogsRouter.post('/', async (request, response) => {
-  //checking if title or url are missing
-  if (!request.body.title && !request.body.url) {
 
-    //if missing 400 Bad request
-    response.status(400).end()
-
-  } else {
-
-    //checking if likes is missing
-    if (!request.body.likes) {
-
-      //if missing likes = 0
-      request.body.likes = 0
-    }
-
-    //creates blog and saves to mongoDB
-    const blog = new Blog(request.body)
-    const savedBlog = await blog.save()
-
-    //responds with created blog
-    response.json(savedBlog.toJSON())
+  const body = request.body
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
   }
+  const user = await User.findById(decodedToken.id)
+  //checking if title or url are missing
+  if (!body.title && !body.url) response.status(400).end()
 
-  
-  
+  //creates blog and saves to mongoDB
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes === undefined ? 0 : body.likes,
+    user: user
+  })
+
+  const savedBlog = await blog.save()
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
+  //responds with created blog
+  response.json(savedBlog.toJSON())
 })
 
 //delete blog from MONGODB
