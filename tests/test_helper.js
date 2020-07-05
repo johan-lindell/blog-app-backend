@@ -2,6 +2,8 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 
+
+//function that returns test list with created user
 const initialBlogs = user => { return [
     {
         title: 'testblog1',
@@ -36,15 +38,6 @@ const usersInDb = async () => {
     return users.map(u => u.toJSON())
 }
 
-const createUser = (username, password) => {
-    return (
-    {
-        username: username,
-        name: 'testing',
-        password: password
-    })
-
-}
 module.exports = {
     initialBlogs,
     blogsInDb,
