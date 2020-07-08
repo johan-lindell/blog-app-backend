@@ -51,9 +51,9 @@ describe('total likes', () => {
 
 describe('favorite blog based on most likes', () => {
 
-    test('when list is empty equals to zero', () => {
+    test('when list is empty equals to null', () => {
         const result = listHelper.favoriteBlog(emptyList)
-        expect(result).toBe(0)
+        expect(result).toBe(null)
     })
 
     test('when list has only one blog equals the same blog', () => {
@@ -64,5 +64,39 @@ describe('favorite blog based on most likes', () => {
     test('when list has multiple elements, returns correct blog', () => {
         const result = listHelper.favoriteBlog(listWithMultipleBlogs)
         expect(result).toEqual(listWithMultipleBlogs[2])
+    })
+})
+
+describe('mosBlogs returns correct author and blogs', () => {
+    test('when list is empty equals to null', () => {
+        const result = listHelper.mostBlogs(emptyList)
+        expect(result).toBe(null)
+    })
+
+    test('when list has only one blog, equals to that blogs author', () => {
+        const result = listHelper.mostBlogs(listWithOneBlog)
+        expect(result).toEqual({ author: listWithOneBlog[0].author, blogs: 1 })
+    })
+
+    test('when list has multiple elements, returns correct author and number of blogs', () => {
+        const result = listHelper.mostBlogs(listWithMultipleBlogs)
+        expect(result).toEqual({ author: "Robert C. Martin", blogs: 3 })
+    })
+})
+
+describe('mostLikes returns correct author and blogs', () => {
+    test('when list is empty equals to null', () => {
+        const result = listHelper.mostLikes(emptyList)
+        expect(result).toBe(null)
+    })
+
+    test('when list has only one blog, equals to that blogs author and likes', () => {
+        const result = listHelper.mostLikes(listWithOneBlog)
+        expect(result).toEqual({ author: listWithOneBlog[0].author, likes: listWithOneBlog[0].likes })
+    })
+
+    test('when list has multiple elements, returns correct author and likes', () => {
+        const result = listHelper.mostLikes(listWithMultipleBlogs)
+        expect(result).toEqual({ author: "Edsger W. Dijkstra", likes: 17 })
     })
 })
