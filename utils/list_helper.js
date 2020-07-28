@@ -28,7 +28,7 @@ const mostBlogs = blogs => {
     } else {
     let authors = blogs.map(person => person.author)
     authors = _.countBy(authors)
-    const authorWithMostBlogs = _.max(_.keys(authors), o => authors[o])
+    const authorWithMostBlogs = _.maxBy(_.keys(authors), o => authors[o])
     return ({
         author: authorWithMostBlogs,
         blogs: authors[authorWithMostBlogs]
@@ -47,7 +47,7 @@ const mostLikes = blogs => {
         return obj
     }, {})
     console.log(authors)
-    const authorWithMostLikes = _.max(_.keys(authors), o => authors[o])
+    const authorWithMostLikes = _.maxBy(_.keys(authors), o => authors[o])
     return ({
         author: authorWithMostLikes,
         likes: authors[authorWithMostLikes]
